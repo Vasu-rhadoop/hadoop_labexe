@@ -1,0 +1,32 @@
+A101,Air India,Chennai-Australia,Jet,210.92,2014
+A101,Air India,Chennai-Australia,Jet,185.92,2015
+A102,Air India,Chennai-Singapore,Air Bus,119.55,2014
+A102,Air India,Chennai-Singapore,Air Bus,279.55,2015
+A104,Air India,Chennai-Colombo,Jet,321.92,2014
+A104,Air India,Chennai-Columbo,Jet,423.73,2014
+A104,Air India,Chennai-Colombo,Jet,321.92,2015
+A104,Air India,Chennai-Columbo,Jet,423.73,2015
+A201,Lufthansa,Delhi-Berlin,Jet,356.12,2014
+A201,Lufthansa,Delhi-Berlin,Jet,432.12,2015
+A203,Lufthansa,Mumbai-Newyork,Boeing,752.15,2014
+A203,Lufthansa,Mumbai-Newyork,Boeing,902.15,2015
+A204,Lufthansa,Mumbai-Torrento,Boeing,772.15,2014
+A204,Lufthansa,Mumbai-Torrento,Boeing,405.42,2014
+A204,Lufthansa,Mumbai-Torrento,Boeing,772.15,2015
+A204,Lufthansa,Mumbai-Torrento,Boeing,815.42,2015
+A302,Emirates,Delhi-Dubai,Air Bus,922.1,2014
+A302,Emirates,Delhi-Dubai,Air Bus,899.1,2015
+A303,Emirates,Chennai-Riyadh,Boeing,602.3,2014
+A303,Emirates,Mumbai-Muscat,Boeing,123.32,2014
+A303,Emirates,Chennai-Riyadh,Boeing,432.3,2015
+A303,Emirates,Mumbai-Muscat,Boeing,233.32,2015
+A401,PanAm,Delhi-Newyork,Jet,562.88,2014
+A401,PanAm,Delhi-Newyork,Jet,722.88,2015
+A403,PanAm,Mumbai-Washington,Boeing,777.43,2014
+A403,PanAm,Mumbai-Washington,Boeing,512.43,2015
+A502,KLM,Chennai-Kulampur,Air Bus,401.12,2014
+A502,KLM,Chennai-Kulampur,Air Bus,618.12,2015
+A503,KLM,Delhi-Kulampur,Air Bus,547.12,2014
+A503,KLM,Delhi-Kulampur,Air Bus,820.44,2014
+A503,KLM,Delhi-Kulampur,Air Bus,317.12,2015
+A503,KLM,Delhi-Kulampur,Air Bus,215.44,2015
