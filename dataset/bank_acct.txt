@@ -1,6 +1,0 @@
-S36553,Williams,6534,Master
-S66592,Ranveer,12209,Visa
-C55419,Victoria,987123,Visa
-C77631,Caroline,8731,Master
-S88712,Narmadha,765,Visa
-C98234,Kishore,6256,Master
