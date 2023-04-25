@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<Retail>
+   <sales>
+    <country>USA</country> 
+    <city>"Los Angles"</city>
+    <Ordtype>Online</Ordtype>
+    <product>Air-Conditioner</product>
+    <shipped>88</shipped>
+    <delivered>71</delivered>	    
+    </sales>
+   <sales>
+    <country>Germany</country> 
+    <city>Berlin</city>
+    <Ordtype>EMail</Ordtype>
+    <product>Air-Conditioner</product>
+    <shipped>120</shipped>
+    <delivered>84</delivered>	    
+  </sales>
+  <sales>
+    <country>USA</country> 
+    <city>Washington</city>
+    <Ordtype>Phone</Ordtype>
+    <product>Fridge</product>
+    <shipped>110</shipped>
+    <delivered>97</delivered>	    
+   </sales>
+
+   <sales>
+    <country>Muscat</country> 
+    <city>Dubai</city>
+    <Ordtype>Email</Ordtype>
+    <product>Fridge</product>
+    <shipped>80</shipped>
+    <delivered>80</delivered>	    
+   </sales>
+
+   <sales>
+    <country>Germany</country> 
+    <city>Berlin</city>
+    <Ordtype>Online</Ordtype>
+    <product>Television</product>
+    <shipped>94</shipped>
+    <delivered>94</delivered>	    
+   </sales>
+
+   <sales>
+    <country>France</country> 
+    <city>Paris</city>
+    <Ordtype>Email</Ordtype>
+    <product>Air-Conditioner</product>
+    <shipped>105</shipped>
+    <delivered>83</delivered>	    
+    </sales>
+
+   <sales>
+    <country>USA</country> 
+    <city>California</city>
+    <Ordtype>Online</Ordtype>
+    <product>Television</product>
+    <shipped>89</shipped>
+    <delivered>74</delivered>	
+   </sales>
+   
+   <sales>
+    <country>Germany</country> 
+    <city>Berlin</city>
+    <Ordtype>Online</Ordtype>
+    <product>Television</product>
+    <shipped>102</shipped>
+    <delivered>90</delivered>
+   </sales>
+
+   <sales>
+    <country>France</country> 
+    <city>Paris</city>
+    <Ordtype>Online</Ordtype>
+    <product>Fridge</product>
+    <shipped>95</shipped>
+    <delivered>82</delivered>
+    </sales>
+
+	<sales>
+    <country>Germany</country> 
+    <city>Berlin</city>
+    <Ordtype>Email</Ordtype>
+    <product>Fridge</product>
+    <shipped>72</shipped>
+    <delivered>72</delivered>
+	</sales>    	        
+   <sales>
+    <country>Muscat</country> 
+    <city>Dubai</city>
+    <Ordtype>Online</Ordtype>
+    <product>Air-Conditioner</product>
+    <shipped>95</shipped>
+    <delivered>89</delivered>
+    </sales>
+ </Retail>

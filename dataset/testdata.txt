@@ -1,0 +1,8 @@
+Apache Database is a framework or an engine
+Apache Database is an open source software 
+Apache Database is in memory processing engine
+Apache Database is 100% faster than hadoop
+Apache Database is developed using Scala
+
+
+

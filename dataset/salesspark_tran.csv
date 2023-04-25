@@ -1,0 +1,22 @@
+trn_id,sid,make,brand,soldqty,solddt
+101,A01,Apple,Iphone6,1070,2012-04-19
+102,S07,Samsung,Galaxy S5,2061,2012-06-15
+103,W05,Windows,Lumia200,702,2012-09-22
+104,M04,Motorola,MotoX,669,2012-06-03
+105,M04,Motorola,MotoG,887,2012-06-14
+106,S07,Samsung,Galaxy S5,1050,2012-04-11
+107,A01,Apple,Iphone5,905,2010-05-10
+108,A01,Apple,Iphone6,1050,2012-05-14
+109,S07,Samsung,Galaxy S5,772,2012-06-28
+110,L04,Lenova,Vibe,1005,2012-04-10
+111,W05,Windows,Lumia100,1019,2012-05-24
+112,M04,Motorola,MotoG,669,2012-06-03
+113,A01,Apple,Iphone6,1275,2012-05-11
+114,A01,Apple,Iphone5,745,2011-03-19
+115,S07,Samsung,Galaxy S3,1161,2010-06-15
+116,W05,Windows,Lumia100,405,2012-09-22
+117,M04,Motorola,MotoG,722,2014-09-03
+118,M04,Motorola,MotoX,2087,2014-06-14
+119,S07,Samsung,Galaxy S5,1050,2012-04-11
+120,V01,Vivo,V5 Plus,1122,2012-10-12
+

@@ -1,0 +1,18 @@
+Prodid,ProdGroup,ProdMake,ProdRate
+FD010,Fridge,LG,18000
+TV011,TV,LG,36000
+CM022,Computer,LG,31000
+FD007,AC,Onida,38000
+TV008,TV,Onida,29000
+FD002,Fridge,TVS,19500
+CM005,Computer,DELL,21000
+CM016,Laptop,DELL,42000
+CM007,Laptop,HP,36500
+CM0002,Computer,HP,21500
+AM010,Mobile 5S,Apple,32500
+SM012,Mobile S4,Samsung,31000
+MM007,Mobile X12,Micromax,21000
+AP011,Mobile 5C,Apple,27000
+SM013,Mobile S5,Samsung,24000
+SM013,Mobile S3,Samsung,18000
+XXX99,Testdata,Zend,100

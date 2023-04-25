@@ -1,0 +1,10 @@
+{ "country" : "USA" , "city" : "California" , "population" : 18.15},
+{ "country" : "USA" , "city" : "NewYork" , "population" : 20.18},
+{ "country" : "Japan" , "city" : "Tokyo" , "population" : 30.38},
+{ "country" : "China" , "city" : "Beijing" , "population" : 38.26},
+{ "country" : "USA" , "city" : "Los Angles" , "population" : 14.15},
+{ "country" : "China" , "city" : "Shangai" , "population" : 26.22},
+{ "country" : "UK" , "city" : "London" , "population" : 21.92},
+{ "country" : "India" , "city" : "Mumbai" , "population" : 16.25},
+{ "country" : "UK" , "city" : "Glasgow" , "population" : 13.11},
+{ "country" : "India" , "city" : "New Delhi" , "population" : 17.16}

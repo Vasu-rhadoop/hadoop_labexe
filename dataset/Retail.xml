@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<authorList>
+    <name>"Sidney Shelton" </name>
+    <publisher>"Penguin"</publisher>
+    <country>USA</country> 
+    <currency>dollar</currency>
+    <price>8.55</price>	    
+  
+ <name>"PG Wodehouse" </name>
+    <publisher>"Thomson Press</publisher>
+    <country>USA</country> 
+    <currency>dollar</currency>
+    <price>13.97</price>    
+  
+  <name>"Jeffrey Archer"</name>
+    <publisher>"Thomson Press"</publisher>
+    <country>USA</country> 
+    <currency>dollar</currency>
+    <price>10.28</price>	
+  
+  <name>"Chetan Bhagat"</name>
+    <publisher>"Vikas Publications</publisher>
+    <country>India</country> 
+    <currency>Rupee</currency>
+    <price>305.00</price>	
+  
+ <name>"Arundati Roy" </name>
+    <publisher>"Tata McGraw"</publisher>
+    <country>India</country> 
+    <currency>Rupee</currency>
+    <price>269.00</price>	
+ </authorList>
