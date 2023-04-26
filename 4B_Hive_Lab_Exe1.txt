@@ -1,0 +1,722 @@
+Hive Hands-on Exeercise
+==========================
+
+HLE_4.1.1
+---------
+
+DISPLAYING  DATABASE
+set hive.cli.print.current.db=true;
+
+DISPLAYING  Column heading
+set hive.cli.print.header=true;
+
+DISPLAYING HDFS DIRECTORY inside HIVE
+!hdfs dfs -ls /
+
+Schema
+go to mysql 
+use metastore
+To view tables in hive 		--> select * from TBLS
+To view columns in hive table 	--> select * from COLUMNS_V2
+
+READ FROM TABLE
+===============
+select * from sales_tran;
+select * from sales_tran where soldqty between 500 and 900;
+select * from sales_tran where soldqty>= 650 and soldqty<= 1200;
+select * from sales_tran where make in ('Apple','Samsung');
+select * from sales_tran where make like '%s%'
+select * from sales_tran where make like '%s'
+
+HLE_4.1.2
+
+MAPREDUCE
+---------
+select make,brand,sum(soldqty),count(make) from sales_tran group by make,brand;
+select make,brand,sum(soldqty) as total ,count(make) as trans from sales_tran group by make,brand   having count(soldqty)>1 order by trans DESC;
+select make,brand,sum(soldqty) as total ,count(make) as trans from sales_tran group by make,brand   having sum(soldqty)>1000 order by trans DESC;
+
+HLE_4.1.3
+
+STASTICAL FUNCTIONS
+
+Aggregate functions (STANDARD DEVIATION, VARIANCE)
+-------------------------------------
+select dept,variance(salary) from employee group by dept_id;
+
+HLE_4.1.4
+
+TABLE PROPERTIES
+-----------------
+describe formatted sales; 
+describe extended sales (TBLProperties - SerDe types, Compression types)
+describe database extended sales_tran (DBProperties - Loc,User)
+
+
+DROP DATABASE WITH TABLES
+----------------------------
+drop database intdb64 cascade;
+
+==============================================================================================================================================
+
+
+LAB EXE (EMPLOYEE)  HLE_4.1.X
+=================================
+1) concatenate fname,lname, substr desg, lower fname,desg
+2) salary  50000 and 90000
+3) salary from dept D11,E21,E01
+4) dept,desg salary total
+5) dept,desg count
+===============================================================================================================================================
+HLE_4.2.1
+
+CREATE TABLE (Managed or Internal table)
+=========================================
+
+create table bank_rank(country char(15),rank int,bank char(20),capital int,asset bigint) row format delimited fields terminated 
+by ',' lines terminated by '\n';
+
+load data local inpath '/home/hduser/dataset/bank50_rank.csv' into table bank_rank;
+
+select bank as Bank ,sum(capital) as CAPITAL from bank_rank group by bank having count(bank)>1 ORDER BY bank DESC;
+
+select bank as Bank ,count(bank),sum(capital) as TOTCAPITAL ,round(avg(capital),2) as AVGCAPITAL ,min(asset) as MINASSET ,max(asset) as MAXASSET from bank_rank group by bank having count(bank)>1 as TOTCOUNT DISTRIBUTE BY bank;
+
+
+CREATE TABLE (Managed or Internal table)
+=========================================
+categories table
+
+create table categories (category_id int,category_department_id int,category_name varchar(45)) row format delimited fields terminated by ',' lines terminated by '\n' tblproperties ("skip.header.line.count"="1");
+
+load data local inpath '/home/hduser/dataset/categories.csv' into table categories;
+
+-----------------------------------------------
+
+customers table
+
+create table customers (customer_id int,customer_fname varchar(45),customer_lname varchar(45),customer_email varchar(45),customer_password varchar(45),customer_street varchar(255),customer_city varchar(45),customer_state varchar(45),customer_zipcode varchar(45)) row format delimited fields terminated by ',' lines terminated by '\n' tblproperties ("skip.header.line.count"="1");
+
+load data local inpath '/home/hduser/dataset/customers.csv' into table customers;
+---------------------------------------------------------
+
+departments table
+
+create table departments (department_id int,department_name varchar(45)) row format delimited fields terminated by ',' lines terminated by '\n' tblproperties ("skip.header.line.count"="1");
+
+load data local inpath '/home/hduser/dataset/departments.csv' into table departments;
+
+----------------------------------------------------------
+order_items
+
+
+create table order_items (order_item_id int,order_item_order_id int,order_item_product_id int,order_item_quantity int,order_item_subtotal float,order_item_product_price float) row format delimited fields terminated by ',' lines terminated by '\n' tblproperties ("skip.header.line.count"="1");
+
+
+load data local inpath '/home/hduser/dataset/order_items.csv' into table order_items;
+
+--------------------------------------------------------------------
+orders 
+
+create table orders (order_id int,order_date timestamp,order_customer_id int,order_status varchar(45)) row format delimited fields terminated by ',' lines terminated by '\n' tblproperties ("skip.header.line.count"="1");
+
+
+load data local inpath '/home/hduser/dataset/orders.csv' into table orders;
+
+----------------------------------------------------------------
+products
+
+create table products (product_id int,product_category_id int,product_name varchar(45),product_description varchar(255),product_price float,product_image varchar(255)) row format delimited fields terminated by ',' lines terminated by '\n' tblproperties ("skip.header.line.count"="1");
+
+load data local inpath '/home/hduser/dataset/products.csv' into table products;
+
+===========================================================================================================================================================
+HLE_4.2.2
+
+CREATE TABLE VARIOUS FEATURES
+==============================
+create table sales_new as select * from sales  - All Data & Strurcture copied
+create table sales_new as select * from sales where 1=0 - Only structure without data
+create table sales_new as select * from sales where soldqty>100 - Coping selective data
+
+create table sales_new as select make,brand,soldqty from sales - Coping selective columns
+
+create table sales(id string, make string, brand string, soldqty int,solddt date row  format delimited fields terminated by ',' lines terminated by '\n';
+
+create  external table sales_tran(id string , make string comment 'Prodcut Make' ,brand string, soldqty string comment 'Sold Quantity', solddt date comment 'Date of Sale') comment 'Sales Analysis' row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/sales/';
+
+
+===============================================================================================================================================
+
+HLE_4.2.2
+
+CREATE TABLE VARIOUS FEATURES
+==============================
+create table sales_new as select * from sales  - All Data & Strurcture copied
+create table sales_new as select * from sales where 1=0 - Only structure without data
+create table sales_new as select * from sales where soldqty>100 - Coping selective data
+
+create table sales_new as select make,brand,soldqty from sales - Coping selective columns
+
+create table sales_tran(trn_id int, sid char(4),make char(15), brand char(15), soldqty int,solddt date,loc char(4)) row  format delimited fields terminated by ',' lines terminated by '\n';
+
+create  external table sales_tran(id string , make string comment 'Prodcut Make' ,brand string, soldqty string comment 'Sold Quantity', solddt date comment 'Date of Sale') comment 'Sales Analysis' row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/sales/';
+
+
+===============================================================================================================================================
+
+HLE_4.3.1
+
+ORDER BY   SORT BY     DISTRIBUTE  BY    CLUSTER BY
+====================================================
+SELECT make, soldqty FROM sales_tran ORDER BY soldqty DESC
+SELECT make, soldqty FROM sales_tran SORT BY make,soldqty
+SELECT make, sum(soldqty) FROM sales_tran GROUP BY make DISTRIBUTE BY make;
+SELECT make, brand,sum(soldqty) FROM sales_tran  group by make,brand CLUSTER BY make,brand;
+============================================================================================================================================
+	
+HLE_4.4.1
+
+MANAGED & EXTERNAL TABLE 
+========================
+
+create external table bank_rank(country char(25),rank int,bank char(30),capital int,asset bigint) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/bank/';
+
+=============================================================================================================================================
+
+HLE_4.5.1
+
+
+JOIN   (MAPJOIN (also called as HASH JOIN) ,REDUCE JOIN, SMB JOIN)
+=====
+
+JOIN (MAPJOIN ,REDUCE JOIN before version 0.11, creates hashtable in mem and file) ---> Shuffle,Broadcast,Sort-Merge-Bucket Join,in-memory hash join
+
+
+set hive.auto.convert.join=true;
+set hive.mapjoin.smalltable.filesize=4096;
+
+SELECT /*+ MAPJOIN(r) */ t.sid,t.make,t.brand,t.soldqty,r.price,t.soldqty*r.price,r.currency from sales_tran t full outer join sales_rate r on t.sid=r.sid;
+
+SELECT /*+ MAPJOIN(d) */ e.eid,e.fname,e.dept_id,d.dept_name,e.salary from employee e   inner join dept d on e.dept_id=d.dept_no;
+
+LEFT SEMI JOIN  (Replaces , in & exisit in Hive)
+===============
+LEFT SEMI JOIN: Only returns the records from the left-hand table.  Considers all the value in the table and do not use alias name
+
+SELECT  *  from sales_tran  LEFT SEMI JOIN sales_rate  on sales_tran.sid=sales_rate.sid;
+
+
+
+HLE_4.5.2
+
+SHUFFLE/REDUCE JOIN
+===================
+select t.make,t.brand,SUM(soldqty*r.price) as Total_Value, AVG(soldqty*r.price) as Avg_Value,MAX(soldqty*r.price) as Max_Value,MIN(soldqty*r.price) MIN_Value from sales_tran t join sales_rate r on t.sid=r.sid group by t.make,t.brand  having count(make)>1 order by Total_Value;
+
+select t.make,t.brand,SUM(soldqty*r.price) as Total_Value, round(AVG(soldqty*r.price),2) as Avg_Value,MAX(soldqty*r.price) as Max_Value,MIN(soldqty*r.price) MIN_Value from sales_tran t  full outer join sales_rate r on t.sid=r.sid group by t.make,t.brand  having count(make)>1 order by Total_Value;
+
+
+select t.id,t.make,t.brand,t.soldqty,r.rate,t.soldqty*r.rate,x.tax,x.profit,r.currency from sales_tran t join sales_rate r on t.id=r.id left outer join sales_tax_profit x on r.country=x.country
+
+
+select t.make,sum(soldqty),r.rate from sales_tran t join sales_rate r on t.id=r.id group by t.make
+
+SELECT  d.dept_name,sum(e.salary) from employee e   inner join dept d on e.dept_id=d.dept_no group by dept_name;
+==============================================================================================================================================
+
+HLE_4.6.1
+
+PARTITION
+----------
+
+create external table sales_loc(id string, make string, brand string, sold_qt int) partitioned by (loc string) row  format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/loc';
+
+load  data local inpath '/home/hduser/dataset/sales_USA.csv'  into table sales_loc partition(loc='USA');
+
+show partitions sales_loc;
+
+
+DYNAMIC PARTITION  (Folder Storage)
+------------------------------------
+
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode= nonstrict;
+set hive.exec.max.dynamic.partitions.pernode=1000
+
+create TEMPORARY table sales_staging(sid char(4),make char(12),brand char(12), soldqty int,country string) row format delimited fields terminated by ',' lines terminated by '\n';
+
+load data local inpath '/home/hduser/dataset/sales_region.csv' into table sales_staging;
+
+create external table sales_country(sid char(4),make char(12),brand char(12), soldqty int) partitioned by (country string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/country';
+
+insert into table sales_country partition(country) select sid,make,brand,soldqty,country from sales_staging;
+
+
+PARTITION
+-----------------
+create external table sales_loc(sid string, make string, brand string, sold_qt int) partitioned by (loc string) row  format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/hive/loc';
+
+load  data local inpath '/home/hduser/dataset/sales_USA.csv'  into table sales_loc partition(loc='USA');
+
+show partitions sales_loc;
+
+DYNAMIC PARTITION  (Folder Storage)
+------------------------------------
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode= nonstrict;
+set hive.exec.max.dynamic.partitions.pernode=1000;
+
+create TEMPORARY table  orders_staging (order_id int,order_date timestamp,order_customer_id int,order_status varchar(45)) row format delimited fields terminated by ',' lines terminated by '\n' tblproperties ("skip.header.line.count"="1");
+
+load data local inpath '/home/hduser/dataset/orders.csv' into table orders_staging;
+
+create EXTERNAL  table  orders_extn (order_id int,order_date timestamp,order_customer_id int) partitioned by (order_status varchar(45)) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/hive/orders/'  tblproperties ("skip.header.line.count"="1");
+
+insert into table orders_extn partition(order_status) select *  from orders_staging;
+
+create EXTERNAL  table  orders_extn (order_id int,order_date timestamp,order_customer_id int) partitioned by (order_status varchar(45),year int) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/orders_year/'  tblproperties ("skip.header.line.count"="1");
+
+insert into table orders_extn partition(order_status,year) select order_id,order_date,order_customer_id,order_status,year(order_date) from orders_staging;
+
+
+HLE_4.6.2
+
+BUCKETING TABLE (File storage)
+------------------------------
+set hive.enforce.bucketing=true;
+set mapred.tasktracker.reduce.maximum=19;
+set hive.exec.max.dynamic.partitions.pernode=100
+
+create EXTERNAL  table  orders_clust (order_id int,order_date timestamp,order_customer_id int,order_status varchar(45),year int) CLUSTERED BY(order_status,year) INTO 19 BUCKETS row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/orders_clust/'  tblproperties ("skip.header.line.count"="1");
+
+
+insert into table orders_clust select order_id,order_date,order_customer_id,order_status,year(order_date) from orders_staging
+
+select * from orders_clust tablesample(bucket 11 out of 19 on order_status,year);
+
+=============================================================================================================================================
+HLE_4.6.1  (Another set of examples with Sales data)
+
+PARTITION
+----------
+
+create external table sales_loc(id string, make string, brand string, sold_qt int) partitioned by (loc string) row  format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/loc';
+
+load  data local inpath '/home/hduser/dataset/sales_USA.csv'  into table sales_loc partition(loc='USA');
+
+show partitions sales_loc;
+
+
+DYNAMIC PARTITION  (Folder Storage)
+------------------------------------
+
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode= nonstrict;
+set hive.exec.max.dynamic.partitions.pernode=1000
+
+create TEMPORARY table sales_staging(sid char(4),make char(12),brand char(12), soldqty int,country string) row format delimited fields terminated by ',' lines terminated by '\n';
+
+load data local inpath '/home/hduser/dataset/sales_region.csv' into table sales_staging;
+
+create external table sales_country(sid char(4),make char(12),brand char(12), soldqty int) partitioned by (country string) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/country';
+
+insert into table sales_country partition(country) select sid,make,brand,soldqty,country from sales_staging;
+
+
+PARTITION
+-----------------
+create external table sales_loc(sid string, make string, brand string, sold_qt int) partitioned by (loc string) row  format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/hive/loc';
+
+load  data local inpath '/home/hduser/dataset/sales_USA.csv'  into table sales_loc partition(loc='USA');
+
+show partitions sales_loc;
+
+DYNAMIC PARTITION  (Folder Storage)
+------------------------------------
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode= nonstrict;
+set hive.exec.max.dynamic.partitions.pernode=1000;
+
+create TEMPORARY table  orders_staging (order_id int,order_date timestamp,order_customer_id int,order_status varchar(45)) row format delimited fields terminated by ',' lines terminated by '\n' tblproperties ("skip.header.line.count"="1");
+
+load data local inpath '/home/hduser/dataset/orders.csv' into table orders_staging;
+
+create EXTERNAL  table  orders_extn (order_id int,order_date timestamp,order_customer_id int) partitioned by (order_status varchar(45)) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/hive/orders/'  tblproperties ("skip.header.line.count"="1");
+
+insert into table orders_extn partition(order_status) select *  from orders_staging;
+
+create EXTERNAL  table  orders_extn (order_id int,order_date timestamp,order_customer_id int) partitioned by (order_status varchar(45),year int) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/orders_year/'  tblproperties ("skip.header.line.count"="1");
+
+insert into table orders_extn partition(order_status,year) select order_id,order_date,order_customer_id,order_status,year(order_date) from orders_staging;
+
+
+HLE_4.6.2
+
+BUCKETING TABLE (File storage)
+------------------------------
+set hive.enforce.bucketing=true;
+set mapred.tasktracker.reduce.maximum=19;
+set hive.exec.max.dynamic.partitions.pernode=100
+
+create EXTERNAL  table  orders_clust (order_id int,order_date timestamp,order_customer_id int,order_status varchar(45),year int) CLUSTERED BY(order_status,year) INTO 19 BUCKETS row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/orders_clust/'  tblproperties ("skip.header.line.count"="1");
+
+
+insert into table orders_clust select order_id,order_date,order_customer_id,order_status,year(order_date) from orders_staging
+
+select * from orders_clust tablesample(bucket 11 out of 19 on order_status,year);
+
+=============================================================================================================================================
+
+
+
+
+
+===========================================================================================================================================
+HLE_4.6.2
+
+BUCKETING TABLE (File storage)
+------------------------------
+set hive.enforce.bucketing=true;
+set mapred.tasktracker.reduce.maximum=6;
+set hive.exec.max.dynamic.partitions.pernode=100
+
+create  external table sales_bucket(sid char(4),make char(12),brand char(12), soldqty int,country string)  CLUSTERED BY(make) sorted by(sid) into   6 buckets row format delimited fields  terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/sales/'
+
+insert into table sales_country select sid,make,brand,soldqty,country from sales_staging;
+
+select * from sales_bucket tablesample(bucket 2 out of 6 on make)
+select * from sales_bucket tablesample(1 perc)
+select * from sales_bucket tablesample(10 PERCENT) LIMIT 1;
+
+
+create  external table sales_bucket(sid char(4),make char(12),brand char(12), soldqty intg)  partitioned by (country string) CLUSTERED BY(make) sorted by(sid) into   6 buckets row format delimited fields  terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/sales/'
+=========================================================================================================================================
+
+
+
+
+
+===========================================================================================================================================
+HLE_4.6.2
+
+BUCKETING TABLE (File storage)
+------------------------------
+set hive.enforce.bucketing=true;
+set mapred.tasktracker.reduce.maximum=6;
+set hive.exec.max.dynamic.partitions.pernode=100
+
+create  external table sales_bucket(sid char(4),make char(12),brand char(12), soldqty int,country string)  CLUSTERED BY(make) sorted by(sid) into   6 buckets row format delimited fields  terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/sales/'
+
+insert into table sales_country select sid,make,brand,soldqty,country from sales_staging;
+
+select * from sales_bucket tablesample(bucket 2 out of 6 on make)
+select * from sales_bucket tablesample(1 perc)
+select * from sales_bucket tablesample(10 PERCENT) LIMIT 1;
+
+
+create  external table sales_bucket(sid char(4),make char(12),brand char(12), soldqty intg)  partitioned by (country string) CLUSTERED BY(make) sorted by(sid) into   6 buckets row format delimited fields  terminated by ',' lines terminated by '\n' stored as textfile location '/inputdir/sales/'
+=========================================================================================================================================
+HLE_4.7.1
+
+VIEWS 
+=====
+
+create view sales_view as select t.sid,t.make,t.brand,t.soldqty,r.price,t.soldqty*r.price,r.currency from sales_tran t full outer join sales_rate r on t.sid=r.sid;
+
+
+Materialized view
+
+CREATE MATERIALIZED as select t.sid,t.make,t.brand,t.soldqty,r.price,t.soldqty*r.price,r.currency from sales_tran t full outer join sales_rate r on t.sid=r.sid;
+
+
+==============================================================================================================================================
+HLE_4.8.1
+
+INDEXING
+----------
+create index mk_idx on table sales_tran(make) as 'compact' with deferred rebuild
+
+
+alter index mk_idx on  sales_tran rebuild; -- load the data into indexed table 
+select * from hivedb__sales_tran_mk_idx__   --- to view the indexed blocks
+drop index mk_idx
+CREATE INDEX inedx_salary ON TABLE employee(salary)
+AS 'org.apache.hadoop.hive.ql.index.compact.CompactIndexHandler';
+
+
+CREATE INDEX ID_IDX ON TABLE SALES_TRAN (ID) AS 'COMPACT' WITH DEFERRED REBUILD;
+SHOW INDEX ON SALES_TRAN;
+
+DROP INDEX ID_IDX ON SALES_TRAN;
+===============================================================================================================================================
+HLE_4.9.1
+
+WRITING TO A FILE & TABLE
+
+CUBE/ROLLUP/RANK OVER
+======================
+select make,brand,sum(soldqty) from sales_tran group by make, brand with rollup;
+select make,brand,sum(soldqty) from sales_tran group by make, brand with cube;
+
+
+
+insert into table sales_summ select make,brand,sum(soldqty) from sales_tran group by make, brand with cube;
+
+insert overwrite directory '/outputdir/saleout/' select make,brand,sum(soldqty) from sales_tran group by make, brand with cube;
+insert overwrite  local directory '/opt/tettmp' row format delimited  fields terminated by ',' lines terminated by '\n' select  * from sales_tran;
+
+RANK OVER()
+create table car_anlz(make string, brand string,model_type string ,fuel_type string ,brake_hp string,price double,mileage double,Drive_train string,stars float) row format delimited fields terminated by ',' lines terminated by '\n';
+
+SELECT make,brand,model_type,price, rank() over (order by price desc) as rank from car_anlz;
+
+
+=====================================================================================================================================
+HLE_4.10.1
+
+ALTER TABLE
+============
+alter table sales ADD COLUMNS (loc string);
+alter table sales change loc,new_loc string-old column  loc changed to new_loc
+alter table sales_test drop partition (loc='USA');
+alter table sales_test add partition (loc='USA') 
+alter table replace columns (make string, brand string) - Rest of the columns will be deleted
+alter table testdb.sales rename to testdb.sales_new;  - Table rename
+
+=============================================================================================================================================
+HLE_4.11.1
+
+JSON FILE
+
+ADD JAR /home/hduser/apache_software/hive-json-serde-0.2.jar
+onsumer Behaviour
+
+create  table consumer(card_type string,bank string,pur_type string,trn_count int) row format SERDE 'org.apache.hadoop.hive.contrib.serde2.JsonSerde';
+
+load  data local inpath '/home/hduser/dataset/consumer_behaviour.json' into table consumer;  
+
+=========================================================================================================================================
+HLE_4.12.1
+
+UDF_Java_Functions
+-------------------
+
+add jar /home/hduserhiveudf.jar;              
+
+create temporary function viv_func as 'org.viv.hive.udfhive';  (package name & class name)
+
+show functions;
+
+select viv_func(product_name) from products;  converts the make into uppercase
+
+=========================================================================================================================================
+
+HLE_4.13.1
+
+Running Scripts (COMMAND LINE)
+
+==============
+
+Command Line (CLI)
+bin/hive -e 'select * from employee limit 10'
+
+bin/hive -S -e 'select * from employee limit 10' > test.txt
+bin/hive -f  viv1.sql
+
+Help
+hive -H
+hive --help
+=========================================================================================================================================
+HLE_4.14.1
+
+BEELINE Client
+===============
+bin/beeline
+!connect jdbc:hive2://
+
+Enter Username : hduser
+Enter Password : hadoop
+Interactive mode (set mapreduce)
+set mapred.reduce.tasks=5
+
+===========================================================================================================================================
+HLE_4.15
+
+Miscellaneous Topics
+=====================
+
+HLE_4.15.1
+
+NULL  HANDLING
+===========================
+Select *  from nvlsale where make is NULL;
+Select *  from nvlsale where make is !NULL;
+
+Select count(*) from nvlsale where make is NULL;
+
+
+
+HLE_4.15.2
+
+
+CASE .. statement IF AND  WHEN conditions
+------------------------------------------
+select make,brand,(case when soldqty>1000 then "Good" else "Poor" end) from sales_tran;
+select fname,dept_id,salary ,if(dept_id='D11' ,salary+1.2,salary) from employee
+
+HLE_4.15.3
+
+Date Handling
+----------------
+select make,solddt,date_add(solddt,5) from sales_tran
+select make,solddt,date_sub(solddt,5) from sales_tran
+select * from sales_tran where month(solddt)='05'
+select * from sales_tran where year(solddt)='2012'
+select make,solddt,weekofyear from sales_tran;
+select make,brand,solddt,weekofyear(solddt)+month(solddt),month(solddt)-2,year(solddt)+1 from sales_tran
+
+select year(solddt),month(solddt),date(solddt),sum(soldqty),count(date(solddt)) from mydb.sales_tran group by year(solddt),month(solddt),date(solddt)
+
+HLE_4.15.4
+
+INVOKING METASTORE COMMAND-LINE
+================================
+Metastore service
+bin/hive --service metastore;
+
+HLE_4.15.5
+
+HBASE_STORAGE
+=============
+CREATE EXTERNAL TABLE sales_hbase(id string,make  string, brand string, soldqty int, solddt date) STORED BY "org.apache.hadoop.hive.hbase.HBaseStorageHandler" WITH SERDEPROPERTIES ("hbase.columns.mapping" = ":key,sd:make,sd:brand,sd:soldqty,sd:solddt") TBLPROPERTIES ("hbase.table.name" = "sales");
+
+HLE_4.15.6
+
+TERMINATE JOB
+==============
+hadoop job -list 
+hadoop job -kill <JOB ID>
+hadoop job -kill job_1546174900988_0004
+====================================================================================================================================
+HLE_4.15.7
+
+DEBUG MODE
+===========
+bin/hive --hiveconf hive.root.logger=DEBUG,console;
+================================================================================================================================
+Semi-Structure file (text 2  wordcount)
+
+SELECT word, count(1) AS count FROM (SELECT explode(split(word, ' ')) AS word FROM wctbl) w  GROUP BY word ORDER BY word;
+
+===================================================================
+Advanced Features 
+==================
+
+SQOOP TO PARQUET FORMAT -  HIVE PARTITION & BUCKETING ON PARQUET FORMAT - COMPRESSION
+======================================================================================
+
+sqoop import --connect jdbc:mysql://localhost:3306/retail_db  --username root --password root --table categories --target-dir '/inputdir/catg_parq/'  --as-parquetfile -m1
+
+create TEMPORARY table category(category_id int,category_department_id int,category_name varchar(45))  row format delimited fields terminated by ',' lines terminated by '\n' stored as parquet location '/inputdir/catg_parq/';
+
+set hive.enforce.bucketing=true;
+set mapred.tasktracker.reduce.maximum=7;
+set hive.exec.max.dynamic.partitions.pernode=100
+
+create table catg_parq(category_id int,category_department_id int,category_name varchar(45)) clustered by (category_department_id) into 7 buckets row format delimited fields terminated by ',' lines terminated by '\n' stored as parquet location '/outputdir/catgid/'  tblproperties ("skip.header.line.count"="1");
+
+insert into table catg_parq select category_id ,category_department_id,category_name from category
+
+select * from catg_parq tablesample(bucket 1 out of 7 on category_department_id)
+
+=============================================================================================
+ORC File Format
+---------------
+Source TextInputFormat, Target ORCOutputFormat
+
+
+CREATE TABLE `sales_orc`(
+  `trn_id` int, 
+  `sid` char(4), 
+  `make` char(12), 
+  `brand` char(12), 
+  `soldqty` int, 
+  `solddt` string)
+ROW FORMAT SERDE 
+'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'    
+WITH SERDEPROPERTIES ( 
+  'field.delim'=',', 
+  'line.delim'='\n', 
+  'serialization.format'=',') 
+STORED AS INPUTFORMAT 
+   'org.apache.hadoop.mapred.TextInputFormat'
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat'
+
+
+Alternatively  (Source ORC, Target ORC)
+--------------
+create external table orc_sales(make char(12),brand char(12),soldqty int) row format delimited fields terminated by ',' lines terminated by '\n' stored as orc location '/inputdir/salorc/';
+
+======================================================================================================
+COMPRESSION     (Snappy)
+--------------
+
+Compression Parquet / ORC
+
+SET hive.exec.compress.output=true;
+SET mapred.output.compression.codec=org.apache.hadoop.io.compress.SnappyCodec;
+SET mapred.output.compression.type=BLOCK;
+
+=============================================================================================================
+
+Vectorization  (ORC file format -  Horton works)
+--------------
+set hive.vectorized.execution.enabled = true;
+set hive.vectorized.execution.reduce.enabled = true;
+
+================================================================================================
+COST BASED OPTIMIZATION (Query tuning, Improves Cardinality in Join tables)
+--------------------------
+
+set hive.cbo.enable = true
+
+===============================================================================================
+
+
+Hive Client (Hive Sever 1 & 2)
+Beeline client (Hive Server 2)
+Hue Web Client (Query Editor)
+
+===================================================================================================
+Production Environment
+-------------------------
+Running  Scripts from command line
+hive --service metastore
+
+Automation
+------------
+Oozie WorkFlow Scheduler
+==================================================================================================
+PERFORMANCE TUNING TECHNIQUE
+----------------------------
+Dynamic Partition 
+Bucketting (Hash)
+Indexing
+Distribute by
+Clustered by
+Vectorization
+Compression
+Parquet / Orc File formats
+Cost Based Optimization 
+================================================================
+
+!quit
+
+********************************************************************************************************************************************************
+ V. Vasu					<--------- End of Hive_Lab_Exe1 -------->           			vasu.bigdatascience@gmail.com
+********************************************************************************************************************************************************
+
+
+
